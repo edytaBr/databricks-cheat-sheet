@@ -32,14 +32,54 @@ csvSchema = StructType([
   StructField("type", StringType(), False)
 ])
 
-testDF = (spark.read          # The DataFrameReader
-  .option('header', 'true')   # Ignore line #1 - it's a header
-  .option('sep', "\t")        # Use tab delimiter (default is comma-separator)
-  .schema(csvSchema)          # Use the specified schema
-  .csv(fileName)              # Creates a DataFrame from CSV after reading in the file
+testDF = (spark.read          #The DataFrameReader
+  .option('header', 'true')   #Ignore line #1 - it's a header
+  .option('sep', "\t")        #Use tab delimiter (default is comma-separator)
+  .schema(csvSchema)          #Use the specified schema
+  .csv(fileName)              #Creates a DataFrame from CSV after reading in the file
 )
 
-# Display data
+#Display data
 testDF.printSchema()
 
+```
+# DataFrames vs SQL & Temporary Views
+
+```{java}
+dataDF.createOrReplaceTempView("name_of_db")
+
+#Use simple sql
+
+%sql
+SELECT * FROM pagecounts
+
+```
+
+# Convert from SQL back to a `DataFrame`
+
+```{java}
+tableDF = spark.sql("SELECT DISTINCT project FROM pagecounts ORDER BY project")
+display(tableDF)
+```
+
+# Exercise
+
+```{java}
+
+(source, sasEntity, sasToken) = getAzureDataSource()
+spark.conf.set(sasEntity, sasToken)
+
+path = source + "/wikipedia/pagecounts/staging_parquet_en_only_clean/"
+
+# 1. Define data frame
+#
+df = (spark                    # Our SparkSession & Entry Point
+  .read                        # Our DataFrameReader
+  .parquet(path)               # Read in the parquet files
+  .select("article")           # Reduce the columns to just the one
+  .distinct()                  # Produce a unique set of values
+)
+totalArticles = df.count() # Identify the total number of records remaining.
+
+print("Distinct Articles: {0:,}".format(totalArticles))
 ```
