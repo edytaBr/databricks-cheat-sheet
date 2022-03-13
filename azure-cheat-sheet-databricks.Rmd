@@ -8,7 +8,7 @@ author: |
         |
         | 
         | 
-        | ![](Databricks_Logo.png){width=4in}  
+        | ![](assets/Databricks_Logo.png){width=4in}  
         |
         |
         
@@ -17,7 +17,30 @@ date: "12 3 2022"
 output: pdf_document
 
 ---
+\newpage
+# Introduction
 
+Apache Spark is a unified analytics engine for large-scale data processing and machine learning.
+
+The Three V's of Big Data: Volume, Velocity, and Variety.
+
+# Understanding the architecture of spark job
+
+- Spark is distributed computing environment.
+- The unit of distribution is a Spark Cluster. 
+- Every Cluster has a Driver and one or more executors.
+- Work submitted to the Cluster is split into as many independent Jobs as needed - this is how work is distributed across the Cluster's nodes. 
+- Jobs are further subdivided into tasks. 
+- The input to a job is partitioned into one or more partitions.
+
+![Spark - Cluster - Tasks](assets/spark-cluster-tasks.png){width=60% height=60%}
+
+# Jobs & stages
+
+- Each parallelized action is referred to as a **Job**.
+- The results of each Job (parallelized/distributed action) is returned to the Driver.
+- Depending on the work required, multiple Jobs will be required.
+- Each Job is broken down into **Stages**.
 \newpage
 # Reading Data 
 
@@ -83,3 +106,49 @@ totalArticles = df.count() # Identify the total number of records remaining.
 
 print("Distinct Articles: {0:,}".format(totalArticles))
 ```
+
+# Describe the difference between eager and lazy execution
+
+Fundamental to Apache Spark are the notions that
+
+- Transformations are LAZY - like creating data - They eventually return another `DataFrame`.
+- Actions are EAGER - display data (*touch data*)
+
+**Transformations** applied to `DataFrames` are lazy, meaning they will not trigger any jobs. If you pass the `DataFrame` to a display function, a job will be triggered because display is an action.
+
+## Types of Transformations
+
+- A transformation may be wide or narrow.
+- A wide transformation requires sharing data across workers.
+- A narrow transformation can be applied per partition/worker with no need to share or shuffle data to other workers.
+
+### Narrow Transformations
+The data required to compute the records in a single partition reside in at most one partition of the parent Dataframe.
+
+
+```{java}
+from pyspark.sql.functions import col
+display(countsDF.filter(col("NAME").like("%TX%")))
+```
+
+### Wide Transformations
+The data required to compute the records in a single partition may reside in many partitions of the parent Dataframe. These operations require that data is shuffled between executors.
+Wide transformation shares data across workers by shuffling data between executors.
+
+```{java}
+from pyspark.sql.functions import col
+display(countsDF.groupBy("UNIT").sum("counts"))
+```
+
+# Catalyst Optimizer 
+
+Among the most powerful components of Spark are Spark SQL. At its core lies the Catalyst optimizer. This extensible query optimizer supports both rule-based and cost-based optimization.
+Spark SQL uses Catalyst's general tree transformation framework in four phases - Analysis, Logical Optimization, Physical Planning, and Code Generation. Our code is evaluated and optimized by the Catalyst Optimizer.
+
+
+
+# UnsafeRow (also known as Tungsten Binary Format)
+
+- Sharing data from one worker to another can be a costly operation.
+- Spark has optimized this operation by using a format called Tungsten.
+- Tungsten prevents the need for expensive serialization and de-serialization of objects in order to get data from one JVM to another.
