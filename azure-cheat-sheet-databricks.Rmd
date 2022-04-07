@@ -527,3 +527,123 @@ spark.sql("""
 **4. What size does OPTIMIZE compact small files to?**
 
 Around 1GB
+
+# Azure Databricks structured streaming
+
+- is a fast, scalable
+- and fault-tolerant stream processing API. 
+- used to perform analytics on your streaming data in near real time.
+- possible to use SQL queries to process streaming data in the same way as process static data
+
+# Event Hubs and Spark Structured Streaming
+
+- scalable real-time data ingestion service that processes millions of data in a matter of seconds. 
+- can receive large amounts of data from multiple sources and stream the prepared data to Azure Data Lake or Azure Blob storage.
+- can be integrated with Spark Structured Streaming to perform processing of messages in near real time.
+- possible to query and analyze the processed data as it comes by using a Structured Streaming query and Spark SQL.
+
+# Streaming concepts
+
+**Stream processing** continuously incorporate new data into Data Lake storage and compute results.
+
+- The streaming data comes in faster than it can be consumed when using traditional batch-related processing techniques. 
+- **A stream of data** is treated as a table to which data is continuously appended. Examples of such data:
+    - include bank card transactions
+    - Internet of Things (IoT) device data
+    - video game play events.
+
+**A streaming system** consists of:
+- Input sources such as Kafka, 
+- Azure Event Hubs,
+- IoT Hub, files on a distributed system,
+- TCP-IP sockets
+- Stream processing using Structured Streaming
+- forEach sinks
+- memory sinks, etc.
+
+Sorting is one of a handful of operations that is either too complex or logically not possible to do with a stream.
+**Triggers**: The trigger specifies when the system should process the next set of data.
+
+
+Q: What do readStream and writeStream do?
+A: readStream creates a streaming DataFrame.
+writeStream sends streaming data to a directory or other type of output sink.
+
+Q: What does display output if it is applied to a DataFrame created via readStream?
+A: display sends streaming data to a LIVE graph!
+
+Q: When you do a write stream command, what does this option do outputMode("append") ?
+A: This option takes on the following values and their respective meanings:
+
+append: add only new records to output sink
+complete: rewrite full output - applicable to aggregations operations
+update: update changed records in place
+Q: What happens if you do not specify option("checkpointLocation", pointer-to-checkpoint directory)?
+A: When the streaming job stops, you lose all state around your streaming job and upon restart, you start from scratch.
+
+Q: How do you view the list of active streams?
+A: Invoke spark.streams.active.
+
+Q: How do you verify whether streamingQuery is running (boolean output)?
+A: Invoke spark.streams.get(streamingQuery.id).isActive.
+
+# Event Time vs Receipt Time
+
+**Event Time** is the time at which the event occurred in the real world.
+
+**Event Time is NOT** something maintained by the Structured Streaming framework.
+
+At best, Structured Streaming only knows about **Receipt Time** - the time a piece of data arrived in Spark.
+
+**Watermarking**
+
+A better solution to the problem is to define a cut-off.
+
+A point after which Structured Streaming will commit windowed data to sink, or throw it away if the sink is console or memory as display() mimics.
+
+That's what watermarking allows us to do.
+
+# Structured Streaming with Azure EventHubs 
+Microsoft Azure Event Hubs is a fully managed, real-time data ingestion service. You can stream millions of events per second from any source to build dynamic data pipelines and immediately respond to business challenges. It integrates seamlessly with a host of other Azure services.
+
+## Event Hubs can be used in a variety of applications such as
+
+- Anomaly detection (fraud/outliers)
+- Application logging
+- Analytics pipelines, such as clickstreams
+- Archiving data
+- Transaction processing
+- User telemetry processing
+- Device telemetry streaming
+- Live dashboarding
+
+## Quiz
+
+**1. When doing a write stream command, what does the outputMode("append") option do?**
+
+- The append mode allows records to be updated and changed in place
+
+- **The append outputMode allows records to be added to the output sink**
+*The outputMode "append" option informs the write stream to add only new records to the output sink. The "complete" option is to rewrite the full output - applicable to aggregations operations. Finally, the "update" option is for updating changed records in place.*
+
+- The append mode replaces existing records and updates aggregates
+\
+
+**2. In Spark Structured Streaming, what method should be used to read streaming data into a DataFrame?**
+
+- **spark.readStream**
+*Use the spark.readStream method to start reading data from a streaming query into a DataFrame.*
+
+- spark.read
+
+- spark.stream.read
+\
+
+**3. What happens if the command option("checkpointLocation", pointer-to-checkpoint directory) is not specified?**
+
+- It will not be possible to create more than one streaming query that uses the same streaming source since they will conflict
+
+- The streaming job will function as expected since the checkpointLocation option does not exist
+
+- **When the streaming job stops, all state around the streaming job is lost, and upon restart, the job must start from scratch**
+*Setting the checkpointLocation is required for many sinks used in Structured Streaming. For those sinks where this setting is optional, keep in mind that when you do not set this value, you risk losing your place in the stream.*
