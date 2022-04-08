@@ -564,30 +564,31 @@ Around 1GB
 Sorting is one of a handful of operations that is either too complex or logically not possible to do with a stream.
 **Triggers**: The trigger specifies when the system should process the next set of data.
 
-
-Q: What do readStream and writeStream do?
+### Check 
+**Q: What do readStream and writeStream do?**
 A: readStream creates a streaming DataFrame.
 writeStream sends streaming data to a directory or other type of output sink.
 
-Q: What does display output if it is applied to a DataFrame created via readStream?
+**Q: What does display output if it is applied to a DataFrame created via readStream?**
 A: display sends streaming data to a LIVE graph!
 
-Q: When you do a write stream command, what does this option do outputMode("append") ?
+**Q: When you do a write stream command, what does this option do outputMode("append") ?**
 A: This option takes on the following values and their respective meanings:
 
-append: add only new records to output sink
-complete: rewrite full output - applicable to aggregations operations
-update: update changed records in place
-Q: What happens if you do not specify option("checkpointLocation", pointer-to-checkpoint directory)?
+- append: add only new records to output sink
+- complete: rewrite full output - applicable to aggregations operations
+- update: update changed records in place
+
+**Q: What happens if you do not specify option("checkpointLocation", pointer-to-checkpoint directory)?**
 A: When the streaming job stops, you lose all state around your streaming job and upon restart, you start from scratch.
 
-Q: How do you view the list of active streams?
+**Q: How do you view the list of active streams?**
 A: Invoke spark.streams.active.
 
-Q: How do you verify whether streamingQuery is running (boolean output)?
+**Q: How do you verify whether streamingQuery is running (boolean output)?**
 A: Invoke spark.streams.get(streamingQuery.id).isActive.
 
-# Event Time vs Receipt Time
+## Event Time vs Receipt Time
 
 **Event Time** is the time at which the event occurred in the real world.
 
@@ -647,3 +648,132 @@ Microsoft Azure Event Hubs is a fully managed, real-time data ingestion service.
 
 - **When the streaming job stops, all state around the streaming job is lost, and upon restart, the job must start from scratch**
 *Setting the checkpointLocation is required for many sinks used in Structured Streaming. For those sinks where this setting is optional, keep in mind that when you do not set this value, you risk losing your place in the stream.*
+
+# Describe Azure Databricks Delta Lake architecture
+![Data Lake Architecture ](assets/data_lake.png){width=60% height=60%}
+
+An example of a Delta Lake Architecture might be as shown in the diagram above.
+
+- Many devices generate data across different ingestion paths.
+- Streaming data can be ingested from IOT Hub or Event Hub.
+- Batch data can be ingested by Azure Data Factory or Azure Databricks.
+- Extracted, Transformed data is loaded into a **Delta Lake**.
+
+## Lambda architecture
+
+Big data generates time consuming queries, thus results might not be up-to-date (Query can take some hours, results are not in real time -> loss in accuracy)
+
+**Lambda architecture** architecture that combines both batch- and real-time processing methods. Time-stamped events are appended to existing events, and nothing is overwritten. 
+
+![Lambda Architecture, Notice how there are really two pipelines here, one batch and one streaming, hence the name lambda architecture. ](assets/lambda_architecture.png){width=60% height=60%}
+
+## Delta Lake architecture
+
+**Delta Lake**  At each stage, we enrich our data through a unified pipeline that allows us to combine batch and streaming workflows through a shared filestore with ACID-compliant transactions.
+
+- **Bronze tables** contain raw data ingested from various sources (JSON files, RDBMS data, IoT data, etc.).
+
+- **Silver tables** will provide a more refined view of our data. We can join fields from various bronze tables to enrich streaming records, or update account statuses based on recent activity.
+
+- **Gold tables** provide business level aggregates often used for reporting and dashboarding. This would include aggregations such as daily active website users, weekly sales per store, or gross revenue per quarter by department.
+
+![Delta Lake Architecture, we can ensure that storage and compute costs are optimized by reducing unnecessary duplication of data and limiting ad hoc querying against full historic data.](assets/delta_lake_architecture.png){width=60% height=60%}
+
+# Unifying Structured Streaming with Batch Jobs with Delta Lake
+
+## General Notation
+Format to write a streaming job to a Delta Lake table.
+
+
+```{java}
+(myDF
+  .writeStream
+  .format("delta")
+  .option("checkpointLocation", checkpointPath)
+  .outputMode("append")
+  .start(path)
+  
+# Output mode
+##- append: add only new records to output sink
+##- complete: rewrite full output - applicable to aggregations operations
+)
+```
+
+## Create QUERY tables (aka "silver tables")
+In order to parse the data in human-readable form, create query/silver tables out of the raw data.
+
+Stream from  previous file write, define transformations, and rewrite data to disk.
+
+### See list of active streams
+
+```{code}
+for s in spark.streams.active:
+  print(s.id)
+
+```
+
+
+
+## CREATE A Table Using Delta Lake
+
+```{java}
+spark.sql("""
+  DROP TABLE IF EXISTS grouped_count
+""")
+spark.sql("""
+  CREATE TABLE grouped_count
+  USING DELTA
+  LOCATION '{}'
+""".format(groupedCountPath))
+```
+
+When using complete output mode, we rewrite the entire state of our table each time our logic runs. While this is ideal for calculating aggregates, we cannot read a stream from this directory, as Structured Streaming assumes data is only being appended in the upstream logic.
+
+### Summary:
+Delta Lake is ideally suited for use in streaming data lake contexts.
+
+Use the Delta Lake architecture to craft raw, query, and summary tables to produce beautiful visualizations of key business metrics.
+
+## Quiz
+
+**1. What is a lambda architecture and what does it try to solve?**
+
+- An architecture that defines a data processing pipeline whereby microservices act as compute resources for efficient large-scale data processing
+
+- **An architecture that splits incoming data into two paths - a batch path and a streaming path. This architecture helps address the need to provide real-time processing in addition to slower batch computations.**
+*Correct. The lambda architecture is a big data processing architecture that combines both batch- and real-time processing methods.*
+
+- An architecture that employs the latest Scala runtimes in one or more Databricks clusters to provide the most efficient data processing platform available today
+
+**2. What command should be issued to view the list of active streams?**
+
+- **Invoke spark.streams.active**
+*That's the correct syntax to view the list of active streams.*
+
+- Invoke spark.streams.show
+
+- Invoke spark.view.active
+
+**3. What is required to specify the location of a checkpoint directory when defining a Delta Lake streaming query?**
+
+- .writeStream.format("delta").checkpoint("location", checkpointPath) ...
+
+- **.writeStream.format("delta").option("checkpointLocation", checkpointPath) ...**
+*That's the correct syntax to specify the checkpoint directory on a Delta Lake streaming query.*
+
+
+- .writeStream.format("parquet").option("checkpointLocation", checkpointPath) ...
+
+
+
+
+### Additional Topics & Resources
+
+* [Delta Streaming Write Notation](https://docs.databricks.com/delta/delta-streaming.html#as-a-sink)
+* [Structured Streaming Programming Guide](href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html)
+* [This is an excellent video describing how Structured Streaming works](https://www.youtube.com/watch?v=rl8dIzTpxrI)
+* [Lambda Architecture](http://lambda-architecture.net/)
+* [Data Warehouse Models](https://bennyaustin.wordpress.com/2010/05/02/kimball-and-inmon-dw-models/)
+* [Reading structured streams from Kafka](https://people.apache.org//~pwendell/spark-nightly/spark-branch-2.1-docs/latest/structured-streaming-kafka-integration.html)
+* [Create a Kafka Source Stream](http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#creating-a-kafka-source-stream)
+* [Multi Hop Pipelines](https://docs.databricks.com/delta/delta-intro.html#case-study-multi-hop-pipelines)
