@@ -777,3 +777,43 @@ Use the Delta Lake architecture to craft raw, query, and summary tables to produ
 * [Reading structured streams from Kafka](https://people.apache.org//~pwendell/spark-nightly/spark-branch-2.1-docs/latest/structured-streaming-kafka-integration.html)
 * [Create a Kafka Source Stream](http://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#creating-a-kafka-source-stream)
 * [Multi Hop Pipelines](https://docs.databricks.com/delta/delta-intro.html#case-study-multi-hop-pipelines)
+
+
+# Create production workloads on Azure Databricks with Azure Data Factory
+
+## Schedule Databricks jobs in a data factory pipeline
+
+ETL: extract, transform, load.
+
+Azure Data Factory, you can create and schedule data-driven workflows (*pipelines*) that can ingest data from disparate data store. 
+
+*A pipeline* is a logical grouping of activities that together perform a task.
+
+### Quiz
+1. What's the purpose of linked services in Azure Data Factory?
+
+- **To represent a data store or a compute resource that can host execution of an activity**
+*Correct. Linked services define the connection information needed for Data Factory to connect to external resources.*
+
+- To represent a processing step in a pipeline
+
+- To link data stores or computer resources together for the movement of data between resources
+
+2. How can parameters be passed into an Azure Databricks notebook from Azure Data Factory?
+
+- Use the new API endpoint option on a notebook in Databricks and provide the parameter name
+
+- **Use notebook widgets to define parameters that can be passed into the notebook**
+*Correct. You can configure parameters by using widgets on the Databricks notebook. You then pass in parameters with those names via a Databricks notebook activity in Data Factory.*
+
+- Deploy the notebook as a web service in Databricks, defining parameter names and types
+
+
+3. What happens to Databricks activities (notebook, JAR, Python) in Azure Data Factory if the target cluster in Azure Databricks isn't running when the cluster is called by Data Factory?
+
+- **If the target cluster is stopped, Databricks will start the cluster before attempting to execute**
+*This situation will result in a longer execution time because the cluster must start, but the activity will still execute as expected.*
+
+- The Databricks activity will fail in Azure Data Factory – you must always have the cluster running
+
+- Simply add a Databricks cluster start activity before the notebook, JAR, or Python Databricks activity
