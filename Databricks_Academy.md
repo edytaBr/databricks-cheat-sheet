@@ -166,3 +166,11 @@ Lakehouse, data are in Data lake data dont have to be copied to different platfo
 ##### Assets
 Things we can create in workspace
 - notebook, table, clusterm job, pipeline, repo
+
+
+# Git version with databricks repos
+
+## Databricks repos: clone pull, add, commit, push, branching
+[CI/CD workflows with Databricks Repos and Git integrationk](#https://docs.databricks.com/repos/ci-cd-best-practices-with-repos.html)
+
+migration 1.3.
