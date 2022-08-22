@@ -4,7 +4,7 @@
 - data engineering
 - data streaming
 - data science and ML
-- 
+
 
 ## Data lake
 - analytics and data scientists quickly find insights and share models on an open platform. 
@@ -210,6 +210,26 @@ how append data: consistency by atomic actions, modification, changes are not co
 - can insert separately or can insert as one single transaction: INSERT INTO students VALUE (4, "Ted". 4.7)
 - views temporary: `CREATE OR REPLACE TEMPORARY VIEW`
 - `UPDATE` -> `SET` -> `WHERE`
+- `MERGE INTO` students b USING students c `ON` "matching columns" WHERE MATCHED AND` u.type = "update" `THEN UPDATE SET *`
 
-### Manipulation Tables with Delata Lake Lab
+### 2.2 Manipulation Tables with Delata Lake Lab
 
+```
+MERGE INTO beans a
+USING new_beans b
+ON a.name=b.name AND a.color = b.color
+WHEN MATCHED THEN
+  UPDATE SET grams = a.grams + b.grams
+WHEN NOT MATCHED AND b.delicious = true THEN
+  INSERT *
+```
+
+### 2.3 Advanced Delta Lake Features
+
+Temporary view usually are mainly to update tables.
+
+**Hive** metastore to register databases, tables, views
+
+- `DESCRIBE EXTENDED`: shows metadata about tables
+ - explore files from above: `dbutils.fs.ls`  
+- Transaction saved in _delta_log
