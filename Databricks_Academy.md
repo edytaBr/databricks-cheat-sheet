@@ -127,6 +127,9 @@ Tracking and cimparing the results of data science experiments
 - It provides a Registry that keeps track of all features that have been created and facilitates reuse across different models.
 
 # II. Databricks module
+
+## Module 1: Databricks Workspaces and Services
+
 Data Lakehouse: one platform to unify all of data, analytics and AI workloads
 - Data Lake poor support for BI
 - Data Warehouse good BI but poor machine learning
@@ -173,4 +176,40 @@ Things we can create in workspace
 ## Databricks repos: clone pull, add, commit, push, branching
 [CI/CD workflows with Databricks Repos and Git integrationk](#https://docs.databricks.com/repos/ci-cd-best-practices-with-repos.html)
 
-migration 1.3.
+- migration 1.3.
+
+- pull regulary
+
+
+# 1.3 L: Getting started with Databricks Platform
+
+%run : run notebooks from different locations 
+- `%run` 
+ - example `%run ./Notebook_B` if notebook are merged together
+ - `display` will display as data frame
+ - metadata = `dbutils.fs.ls`
+ - SELECT * FROM delta .`${DA.paths.datasets}/nyctaxi-with-zipcodes/data`
+
+## Module 2: Data Lake
+
+
+### 2.0 What is Delta Lake
+
+Open source project. optimized for cloud object storage, ACID for object storage transaction guarantees, A: success or fail, C:varies the most, I: D, changes are permanemt
+
+solved issues:
+how append data: consistency by atomic actions, modification, changes are not commited until data jobs are done, real time operation, 
+- Delta lake is default
+
+### 2.1 Managing Delta Tables
+**Atomic operations work independently**
+
+- `Delta lake` default format for all tables created in databricks
+- empty table `CREATE TABLE` students (id `INT`, name `STRING`, value `DOUBLE`) -> dont use `delta` because delta is default in databricks.  
+ - `CREATE TABLE IF NOT EXISTS` students 
+- can insert separately or can insert as one single transaction: INSERT INTO students VALUE (4, "Ted". 4.7)
+- views temporary: `CREATE OR REPLACE TEMPORARY VIEW`
+- `UPDATE` -> `SET` -> `WHERE`
+
+### Manipulation Tables with Delata Lake Lab
+
