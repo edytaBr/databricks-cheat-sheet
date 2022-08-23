@@ -222,6 +222,93 @@ RBAC: who and what can do with resources. Azure Role Based Access Control
 Azure DB: Read replicas
 - help improve performance and scale of read-intensive workloads such as BI and analytics. Replica new services, replica replaces the master in case of regional disasters. data storage replica servers grows automaticall without impacting workloads.h
 
+
+### Module 4
+
+#### Explore Azure Table Storage
+
+#### Azure blob storage -  unstructured data
+
+1. Block blobs 
+consist of blocks
+best for storing discrete large binary objects, each individual block can store up to 100MB of data
+
+2. Page blobs fixed size 512 byte pages
+
+3. Append blobs
+
+rehadration - upgrade blob.
+
+storing images, documents, searching directly in browser, vide and audio files, reduncandy for blobs - are stored in different regions
+soft delete - able to recover
+snapschot - version of blob in time, monitor changes
+
+### Explore Azure File Store
+create file shares - share up to 100 TB, share data, replicated within region and georeplicated, enable encryption, 
+
+### Azure Cosmos DB - no relational data bases
+all types of structures, noSQL data, manage data in partitions, json, data organized in containers, 
+- document data base - 
+
+container, table storage -> 
+
+Cosmos DB APIs - can switch between cosmos api
+
+- SQL API
+- MongoDB API -> document database, to anable mongo db to run on cosmos DB (mongo on permises)
+- Gremlin API -> graph db to azure cosmos db
+- Table API
+- Cassandra API - column dbms - on premises - cassandra like on cosmos db - document request - anable to quickly migrate cassandra api to cosmos db
+
+
+##### Use cases for Azure Cosmos DB
+1. Web and retail
+2. Gaming - db tier is crucial, modern games performe graphical processing on mobile/console clients but rely on the cloud 
+3. IoT systems - many data ingested, 
+
+## Lesson 2 Explore provisioning - cosmos db
+
+1. Azure portal - 
+2. Azure CLI
+3. Azure power shell
+4. azure resource templates
+
+Backup - cosmos - specify, 
+Encryption - service managed or key encryption
+
+Inside cosmos database we can create container.
+
+#### Data migration tool
+to import data - to container - target info - database to connect
+
+#### Azure authentication
+
+1. MFA 
+2. configure storage accounts - 
+3. geo redundancy 3 copies in your region and 3 in another one
+4. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Module 3: Explore non-relational data in Azure
 # Lesson 1
 
@@ -257,3 +344,7 @@ Sql server data tools
 Azure data studio 
 SQLCMD
 Azure CLI/Cloud Shell
+
+Describe data ingestion in Azure:
+ADF - heterogenous
+PolyBase - file based
