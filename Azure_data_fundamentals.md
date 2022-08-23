@@ -1,6 +1,6 @@
 # Azure data fundamentals
 
-## Module 1: explore core data concepts
+# Module 1: explore core data concepts
 
 - structured: schema, rows columns
 - semi-structured, doent fit into rows, columns, but have fags and keys -> data stored in json. 
@@ -107,16 +107,86 @@ Relational data
 - **prescriptive**: what actions has to be taken to achieve the target
 - **cognitive**: based on how the human brain works
 
-## Module 2: Explore relational data in Azure
+# Module 2: Explore relational data in Azure
+
+## Introduction
+### Understand relational data
+
+- *Realtional db* entities from real world as tables
+- *Normalization* schema design process that minimizes data duplication and supports data integrity.
+ - in involves separation of each entoty into tables, decomposition and then define each data type for proper column, separate atributtes into columns, define `PK` and `FK`
+
+### SQL commands
+
+1. **Data Definition Language** (DDL):  statements to create, modify, and remove tables and other objects in a database
+ - `CREATE`
+ - `ALTER`
+ - `DROP`
+ - `RENAME`
+3. **Data Control Language (DCL)**: database administrators to manage access to objects
+ - `GRANT`
+ - `DENY`
+ - `REVOKE`
+ 
+ `GRANT SELECT, INSERT, UPDATE`\
+ `ON` Product\
+ `TO` user1
+ 
+3. **Data Manipulation Language (DML)** to manipulate the rows in tables
+ - `SELECT`
+ - `INSERT`
+ - `UPDATE`
+ - `DELETE`
+ - 
+
+### Describe database objects
+
+Database can store tables but additionally can contain other sturctures that help to optimize data organization.
+- *views*: virtual table based on the result of a `SELECT` query, A virtual table based on the results of a query
+
+- *stored procedures*: SQL statements that can be run on command `CREATE PRODECURE`, can be reused over and over again, runs with `EXEC`. A pre-defined SQL statement that modifies data
+
+- *indexes*: help to search for data: like index in the book to find data faster, can improve performance when db is big. They are nor free, they consume some resources. A structure that enables queries to locate rows in a table quickly.
+
+## Explore relational database services in Azure
+
+### Describe Azure SQL services and capabilities
+
+Azure SQL family - databases based services in Azure include:
+- SQL server on Azure Virtual Machines (VMs) -  IaaS - running in azure with installation of SQL server. , virtuaøizes hardware infrastructure for compute, storage and networking. We manage all aspects of the server, including operating system and SQL Server, updates, configuration, backups, and other mainenance tasks. When customer still needs some administrative privillages. 
+- 
+- Azure SQl Managed Instance - PaaS - automated software update management, backups, maintenance tasks, recude administrative things. Fully automated updates, backups and recovery. 
+
+- Azure SQL Database -  fully managed PaaS. Fully automated updates, backups and recovery.
+ - Single Database
+ - Elastic Pool -  resources reffered as pool, use resources available in the pool.
+ - 
+- Azure SQL Edge - optimized for IoT
+
+### Describe Azure services for open-source databases
+
+1. MySQL: simple. Community, Standard, Enterprise
+ - Azure Database for MySQL: PaaS
+ - Two deployment options: Single Server and Flexible Server
+
+2. MariaDB: rewritten and optimized to improve performance
+ - PaaS
+3. PostgreSQL: can store and manipulate some  geometric data. Own language pgSQL 
+ - PaaS
+  - Single Server - similar to MySQL
+  - Flexible Server - is fully managed database servise, with more control and server configuration, better costs optimatization controls.
+  - Hyperscale (Citus) - database split across nodes, 
+
 
 ### Azure SQL DB
 - highly scalable cloud database service with build in high availability and machine learning. Always encrypted,
+- 
 - **Azure SQL DB Managed instance** combines leading security features with SQL server compability and business model designed for on-permises customers.
 - Azure SQL Managed Instance Option
  - pre provision compute resources for migration, enables cost efficient migration, enables cost-efficient migration. *Instance pool?*
 - Azure SQL Database resources sharing between multiple databases to price optimize, simplified performance management for multiple databases, fully managed service. *Elastic pool?*
 
-PostgresSQL: is the most popular and wanted database for modern apps, relational and custom data types. Ability geo. PGSQL
+PostgresSQL: is the most popular and wanted database for modern apps, relational and custom data types. Ability geo. pgSQL
 MariaDB: Engine is optimized, temporal data. 
 MySQL:simple to use database management system. Community free, Standard, Enterprise.
 
