@@ -306,7 +306,110 @@ to import data - to container - target info - database to connect
   - **Cold** - data accessed inrrequently
   - **Archive** - data we don't want to lost and have to be 
 
+[Azure blob storage](/assets/azure-blob-storage.png)
+
 1.2 Azure DataLake Storage Gen2
 - structured, semi structured, unstructured daya sypred in **files**
 - Gen2 is newer and: advantages - scalability if blob storage, cost conrtol of tiers, hierarchical file system capabilities, compability with major analytics system.
 - to create use hierarchical namespace
+[Azure blob storage](/assets/azure-data-lake.png)
+
+1.3 Azure files
+**File shares** - enables to store a file on one computer and give access to users on other computers - works on local areas, and not when users are distributed. 
+Like files on local uni. On permises, shared between users. 100TB on single storage account, max size of 1 file is 1 TB, up to 2000 shared connections.
+- we can upload file to azure file by using azure portal or azure file storage.
+- Two performance tiers - based on medium: hard discs or ssd
+- Two network file sharing protocols:
+ - SMB  
+ - NFS - premium tier
+[Azure blob storage](/assets/azure-files.png)
+
+1.4 Azure tables
+- noSQL
+- tables with key/value data items
+- not like relational databases - can have semi-structual data
+- all rows must have unique key made of partition key and row key.
+- when modified rows - time stamp is recorded
+- no concept of foregin key, viewes, relationships, stored procedures, 
+- normaly data are denormalized -  we dont have to split data into columns like in relational databases.
+- Azure tables - to ensure fast access - data are split into partitions. 
+
+**Partitioning** - mechanism for grouping related rows based on common property or partition key. The same partition key same storage. 
+[Azure blob storage](/assets/azure-tables.png)
+
+## Sandbox and knowledge check
+Things you can put in the storage;\ for different data types:
+- containers, with blobs
+- file shares
+- tables
+
+Folders in blob storage are virtual, and only exist as part of the path of a blob. Since the products folder contained no blobs, it isn't really there! - we have to upload blob
+
+Folders in a flat namespace blob container are virtual, and can’t be managed.
+
+1. Azure data lake storage.
+2. Azure Data Lake Store Gen2 support enables you to use hierarchical folders to organize and manage access to blobs. It also enables you to use Azure blob storage to host distributed file systems for common big data analytics platforms.
+Data Lake Gen2 upgrade page -> upgrade your storage account to enable hierarchical namespace and support Azure Data Lake Storage Gen 2
+3. Azure files
+4. Azure Tables provide a key/value store for applications that need to store data values, but don't need the full functionality and structure of a relational database. In tables we add entity. Here we add keys. partition key and row key. Here we can manually enter values. 
+5. Azure table storage key - partition key and row key
+6. to support azure synapse analytics we should uograde the account to enable hierarchical namespace and create a blob container to an existing azure storage
+7. azure file storage enables users at different sites to share files. 
+
+## Explore fundamentals of Azure Cosmos DB
+Azure Cosmos DB -  highly scalable database service for NoSQL data.
+- supoorts many APIs
+- highly scalable
+- automatically allocates space in a container for partitions
+- automated indexes
+Usage:
+- IOT and telematics - systems that ingest large amount of data, cosmos can accept data quickly, real time data process by using azure functions
+- Retail and marketing .  
+- Gaming 
+- web and mobile applications - modeling social interactions
+
+### Azure cosmos DB APIs
+
+- by this we can migrate data from commonly  used NoSQL stores and apply their exisiting programming skills. When procisioning new Cosmos DB instance we can select API.
+
+1. Core (SQL) API - can use SQL like language
+2. MangoDB API -  data stored in binary json format (BJSON)
+3. Table API - work with data in key-value tables -  similar to Azure Table Storage but Azure Cosmos offers greater scalability and performance than azure table storage
+4. Cassandra API -  is compatibile - column-family storage structure -  similar to relational tables but not every row has to have the same columns. 
+5. Fremalin API - data in graph structure, 
+
+We can create additional Cosmos DB accounts across multiple regions. For Cosmos DB service region availability
+
+## Explore data roles and services
+
+1. Azure SQL - family of relational database solutions
+ - Azure SQL Database PaaS
+ - Azure SQL Managed Instance - more administrative responsibility than SQL Database
+ - Azure SQL VM - virtuall machine with maximum configurability with full management responsibility
+ - 
+2. Azure Database for open source relational database
+- MySQl
+- MariaDB
+- PostgreSQL
+
+3. Azure Cosmos DB
+- non-relational NoSQL
+- supports many APIs: JSON documnets, key-value pairs, column families, graphs.
+
+4. Azure Storage
+- Blob containers binary files, cost efficient, scalable
+- File shares - network file shares
+- Tables - key-value storages when we need to read and write data quickly
+
+Data enginieers use Azure Storage to host data lakes - blob storage with a hierarchical namespace that enables files to be organized in folders
+
+5. Azure Data Factory
+- allow to define and schedule data pipelines to transform and transfer, 
+- data ingestion from the cloud
+- used to build ETL 
+
+6. Azure Synapse Analytics
+7. 
+
+
+
