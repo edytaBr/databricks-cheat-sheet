@@ -1,5 +1,39 @@
 # Azure data fundamentals
 
+## Explore core data concepts
+
+#### Data types:
+strudctured (tables), semistructures(JSON. not all fields), unstructured(pictures, sound, video).
+
+#### Data stores
+- file stores
+- databases
+
+#### Common formats
+- Delimited text files
+- JavaScript Object Notation (JSON)
+- XML and it's tags
+- Binary Large Object (BLOB)
+- Optimized file formats that helps with compression, indexing, efficient storage and processing
+ - AVRO -  row based format, good for compresing data and minimizing storage and network bandwidth 
+ - ORC - organize data in columns rather rows, contains stripes
+ - Parquet - row groups, , parquet files incuudes metadata that describes the set of rows found in each chunk.
+
+# Explore databases
+- Relational database - structured data data represents entity, PK, FK thus data can be normalized, 
+- Non relational - dont apply relational schema to the data, 
+ - key-value databases - each record consist of a unique key
+ - document database -  form of key database in which the value is a JSON document
+ - column family databases - store tabular data cinprising rows and columns, but we can divide columns into group columns - columns family - like data about customers, products they bought.
+ - graph databases - entities as nodes with links to define relationships between them.
+
+
+## Explore transactional data processing
+- primary function of business computing
+- transactions as small events, (moving money between two accounts) - transactional systems might have many milions of transactions. 
+- Online Transactional Processing (OLTP) - work performed by transactional systems -  suport CRUD operations, - suport acud sematics
+- 
+
 # Module 1: explore core data concepts
 
 - structured: schema, rows columns
@@ -21,6 +55,8 @@ Data Stores
 - Data processing: make something useful from your data, 
  - **streaming processing**: as it arrived straming, each new is processed as it has arrvied. in real time, handles data in real time, no waiting until new batch,data as it has come in. when we are dealing with new dynamical data.
  - **batch** processing new data are collecting into groups. large parts of data at conviniet time, , there is always time delay, between ingestion and processing. data need to be carefully checked. 
+
+!!!!!!!!!! https://docs.microsoft.com/nb-no/learn/modules/explore-core-data-concepts/6-analytical-processing
 
 
 # Lesson 2
