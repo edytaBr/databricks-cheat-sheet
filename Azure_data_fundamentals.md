@@ -289,62 +289,24 @@ to import data - to container - target info - database to connect
 4. 
 
 
+## Module 3: Explore Azure Storage for non-relational data
+ [Microsoft learn](https://docs.microsoft.com/nb-no/learn/modules/explore-provision-deploy-non-relational-data-services-azure/1-introduction)
+ 
+ 1. Azure storage - core service to store data in cloud
+ 
+ 1.1 Azure Blob storage
+ - massive amoungt of unstructured data: binary or blobs.
+  - blobs: blobs store **data files** in optimized in cloud. In azure storage account we store blobs in **containers** (easy way to group related blobs, and organize them into virtual folders) 
+ - Blobs types:
+  - **Block** - set of blocks (block is the smallest to read), *varry* in size up yo 50000 -  max size 4.7. Best to store discrete, large binary data that change infrequently. 
+  - **Page** - *fixed* size pages, page can hold up 8 TB, used to implement virtual disk storage for virtual machines
+  - **Append** - block to support append operations, only append: updating or deleting isnt't supported.
+ - **3 tires in blob storage**
+  - **Hot** - 
+  - **Cold** - data accessed inrrequently
+  - **Archive** - data we don't want to lost and have to be 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Module 3: Explore non-relational data in Azure
-# Lesson 1
-
-### Introduction to SQL
-Statements types:
-
-**DML** Data manipulation language: SELECT, INSERT, UPDATE, DELETE. Some dialects, PGSQL post gress SQL.
-
-**DDL** CREATE, ALTER(modify structure), DROP, RENAME -  create modify and remove
-DCL grant revoke deny
-
-element of the SELECT statement:
-```
-1.  SELECT
-2.  FROM
-3.  WHERE
-4.  GROUP BY
-5.  ORDER BY
-
-HAVING: 
-```
-
-Database based on server
-
-### Query Tools
-Azure portal
-Sql management studio
-Sql server data tools
-
-### Query relational data in Azure SQL Database for PostgresSQL
-
-
-Azure data studio 
-SQLCMD
-Azure CLI/Cloud Shell
-
-Describe data ingestion in Azure:
-ADF - heterogenous
-PolyBase - file based
+1.2 Azure DataLake Storage Gen2
+- structured, semi structured, unstructured daya sypred in **files**
+- Gen2 is newer and: advantages - scalability if blob storage, cost conrtol of tiers, hierarchical file system capabilities, compability with major analytics system.
+- to create use hierarchical namespace
