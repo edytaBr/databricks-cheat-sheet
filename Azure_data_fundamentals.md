@@ -430,5 +430,9 @@ Data enginieers use Azure Storage to host data lakes - blob storage with a hiera
   - Apache HBase
   - Apache Kafka
   - Apache Storm 
-9. Azure Stream 
+  
+9. Azure Stream we can capture real data streamin into analytical data or for real-time visualization
+10. Azure Data Explorer - query and analyze data with timestampsuch as is typically found in log files.
+11. Microsoft Purview - enterprise wide data governance and discoverability
+12. Microsoft Power BI - reporting and data modeling
 
