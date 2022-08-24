@@ -312,7 +312,8 @@ to import data - to container - target info - database to connect
 - structured, semi structured, unstructured daya sypred in **files**
 - Gen2 is newer and: advantages - scalability if blob storage, cost conrtol of tiers, hierarchical file system capabilities, compability with major analytics system.
 - to create use hierarchical namespace
-[Azure blob storage](/assets/azure-data-lake.png)
+
+![Azure blob storage](/assets/azure-data-lake.png)
 
 1.3 Azure files
 **File shares** - enables to store a file on one computer and give access to users on other computers - works on local areas, and not when users are distributed. 
@@ -322,7 +323,10 @@ Like files on local uni. On permises, shared between users. 100TB on single stor
 - Two network file sharing protocols:
  - SMB  
  - NFS - premium tier
-[Azure blob storage](/assets/azure-files.png)
+ 
+ 
+![Azure files](/assets/azure-files.png)
+
 
 1.4 Azure tables
 - noSQL
@@ -335,7 +339,10 @@ Like files on local uni. On permises, shared between users. 100TB on single stor
 - Azure tables - to ensure fast access - data are split into partitions. 
 
 **Partitioning** - mechanism for grouping related rows based on common property or partition key. The same partition key same storage. 
-[Azure blob storage](/assets/azure-tables.png)
+
+
+![Azure blob storage](/assets/azure-tables.png)
+
 
 ## Sandbox and knowledge check
 Things you can put in the storage;\ for different data types:
@@ -408,8 +415,20 @@ Data enginieers use Azure Storage to host data lakes - blob storage with a hiera
 - data ingestion from the cloud
 - used to build ETL 
 
-6. Azure Synapse Analytics
-7. 
-
-
+6. Azure Synapse Analytics - comprehesive solutions: including: data ingestion pipelines, data warehouse storage and data lake storage throught one single service. 
+- multiple analytics
+ - pipelines as in Data Lake Factory
+ - SQL - database engine
+ - Apache Spark - distributed data base processing - multiple programming languages: Java, Scala, Python, SQL.
+ - Azure Synapse Data Explorer  - real time querying
+ 
+ 7. Azure Databricks: zaure version of databricks, for large scale analytics
+ 8. Azure HDInsight - provides azure hosted clusters for popular apache open source big data processing. We use it to create clusters when we have workloads that depend on multiple open source technologies. 
+ 
+  - Apache Spark
+  - Apache Hadoop
+  - Apache HBase
+  - Apache Kafka
+  - Apache Storm 
+9. Azure Stream 
 
