@@ -82,15 +82,25 @@ process data as it arrives rather than storing and processing data later as a gr
 39. To provision Azure Storage we should use Azure Resource Manager (ARM) templates. Azure portal, Azure CLI Azure PowerShell do not use text JSON files.
 40. Data warehouse -  should be used to deploy and support analytical queries that involve high volume data and generating aggregated values. Thus perform sakes trend analyses.
 41. Recording daily sales, printing reports, and searching sales orders are typical operations seen in online data processing (OLTP) databases and not in data warehouses.
+42. Azure Synapse Analytics and Azure Databricks both support using Apache Spark clusters to process data. Azure Cosmos DB is for non-relational data. You can use Azure Data Factory for data integration and migration.
+43. To get data from az Azure SQL database by using Azure Data Factory we should use: linked service and dataset.
+  - To get data from a source, you need to create a linked service for Azure Data Factory. The linked service contains details about the data source including the server name and credentials. You must also define a dataset to describe the expected data structure. A dataset stores data retrieved from a data source.
+  - You can use the Copy data activity for transferring data from one source to another (destination).
+  - You can use an Azure Databricks notebook for processing data using spark clusters with given instructions.
 
-
-
-
-
-
-
-
-
+44. Datasets: in this way we can present data we want to ingest.
+45. A dataset represents the data that you want to ingest for processing. A dataset can also represent output data from a process.
+46. pipeline to perform tasks and processes.
+47. linked service to connect to a source or destination.
+48. notebook can contain cells that read data, process data, and write the results out to a data store.
+49. Power BI reports as paginated reports - case scenario
+  - a report that has a table visual with an ability to print all the data in the table AND
+  - report with a repeatable header and footer AND
+  - a report that is formatted to fit well on a printed page
+  - When a Power BI report that has a table visual contains multiple rows, printed, only records that can are displayed will be printed.
+  - All records print if you design the report by using Report Builder as a paginated report, all records print.
+  - Only paginated report supports repeatable headers and footers.
+  - You cannot create paginated reports by using Power BI visuals. You must use Report Builder instead.
 
 
 
