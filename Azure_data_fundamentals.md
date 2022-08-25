@@ -326,7 +326,12 @@ to import data - to container - target info - database to connect
 
 
 ## Module 3: Explore Azure Storage for non-relational data
- [Microsoft learn](https://docs.microsoft.com/nb-no/learn/modules/explore-provision-deploy-non-relational-data-services-azure/1-introduction)
+Data warehouse may be aggregated and loaded into online analytical processing OLAP model 
+
+**Data lake** are common in large scale dara analytical processing scenarios where a large volume of file based data must be collected and analyzed
+**Data warehouses** are estabilished way to store data in relational schema that is optimized for read operations - primary queries to support 
+**OLAP** model is an aggredated type of data storage that is optimized for analytical workloads - data is pre-aggregated, queries to return the summaries it contains to be run quickly. 
+
  
  1. Azure storage - core service to store data in cloud
  
@@ -467,8 +472,37 @@ Data enginieers use Azure Storage to host data lakes - blob storage with a hiera
   - Apache Kafka
   - Apache Storm 
   
+  
+
+Knowledge check - 
+A data warehouse is a relational database optimized for read operations
+Unstru
+
 9. Azure Stream we can capture real data streamin into analytical data or for real-time visualization
 10. Azure Data Explorer - query and analyze data with timestampsuch as is typically found in log files.
 11. Microsoft Purview - enterprise wide data governance and discoverability
 12. Microsoft Power BI - reporting and data modeling
 
+# Microsoft Azure Data Fundamentals: Explore data analytics in Azure
+
+## Describe data warehousing architecture
+
+1. Data ingestion and processing - 
+2. Analytical data store
+3. Analytical data model
+4. Data visualization
+
+Large scale data ingestion - by create pipelines ETL.Pipelines can be created in Azure Data Factory or in Azure Synapse analytics. 
+
+Pipelines -  activites that operates on data- Pipelines use linked services to load and process data
+
+Analytical data stores types:
+data warehouses_ relational database - saved in schema optimized for data analytics rather than transactional workloads. . great when we have transactional data that can be ooganized into structured schema of tables -  to use SQL query.
+
+Data lakes - **file store** -  distributed file system for high performance acces - schema on read -. Great to support a mix of structured, semi structured and even unstructured data -  when we dont have to enforce schema.
+
+Hybrid solutions data lakehouse - features of data warehouse and data lake. Raw data are stored as as files, and relational layer abstracts underlying files and exppse them as tables which in turn can be quiered.
+
+Services for analytical stores
+- Azure synapse analytics - multiple technologies, 
+- -Azure databricks - 
