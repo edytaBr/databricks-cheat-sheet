@@ -238,3 +238,14 @@ Temporary view usually are mainly to update tables.
 
 #### Reviewing Delta Lake Transactions - 
 
+We can `RESTORE` our data - `RESTORE TABLE` table `TO VERSION OF 8`
+`VACUUM`To clean old data we can clean our data, vacumm on delta table makes -  no travel back in the time. By default prevent to vacumm data younger than 7 days. Retention perdiod: how old they can be.
+`DRY RUN` -  show what will be deleted
+
+### 2.3L Delta Lake Versioning, Optimatization and Vaccuming Lab
+- `DESCRIBE HISTORY beans` -  describes the history of the table
+- tables are changing - thus we can take which version we will use - (read version) - `SELECT * FROM` beans `VERSION AS OF` 1
+- RESTORE A PREVIOUS VERSION - 
+`spark.databricks.delta.vacuum.logging.enabled`** to **`true`** to ensure that the **`VACUUM`** operation is recorded in the transaction log.
+- `DRY RUN`
+- Run the command again without **`DRY RUN`** to permanently delete these files.
