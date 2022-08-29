@@ -31,6 +31,13 @@ compilance and certification regulations
 *3. Which of the following is a problem with the data warehouse model that is resolved by the Databricks Lakehouse Platform?*
 - Poor support for data science, AI, and streaming
 
+## 3. Relational entities and Vievs
+
+### 3.1 Databases and Viewvs
+Creating table with default or defined location
+hive variables  in `{}`
+
+
 *4. Which of the following is a common problem faced by data practitioners?*
 - Difficult to develop a consolidated data policy
 - Siloed functional roles for individuals on data science teams
@@ -249,3 +256,41 @@ We can `RESTORE` our data - `RESTORE TABLE` table `TO VERSION OF 8`
 `spark.databricks.delta.vacuum.logging.enabled`** to **`true`** to ensure that the **`VACUUM`** operation is recorded in the transaction log.
 - `DRY RUN`
 - Run the command again without **`DRY RUN`** to permanently delete these files.
+- define schema if there are no data in the databae which can be inferred into
+
+```
+CREATE TABLE table
+USING CVS OPTIONS (
+path = '${da.paths.datasets}/flights/departuredelays.csv',
+  header = "true",
+  mode = "FAILFAST"
+);
+
+```
+### 2.3L Views and CTEs
+
+CTEs - common table expressions
+
+#### Types of views
+
+1. Normal view `CREATE VIEW`
+2. Temporary view `CREATE TEMPORARY VIEW` - show tables is showing us column with summary about tables, thus `isTemporary` is set to `true` in the case of temporary view
+4. Global Temp View `CREATE GLOBAL TEMPORARY VIEW` this one is missing in the `SHOW TABLES`. glonbal views can be shown in `global _temp`
+
+1. TEMP CREATE GLOBAL TEMPORARY VIEWS are tight to the spark session. so restarting the cluster, detactching/attaching, installing the python package that can restart the interpreter
+6. GLOBAL TEMP VIEWS - are attached to global_temp in cluster as long as the cluster is running we are ok, they are lost when the cluster is restarted
+
+#### CTEs
+
+DROP TABLE CASCADE - drop all associated tables and functions, restrict will not drop non empty
+
+DESCRIBE EXTENDED sales csv
+
+external data sources will not quarantee performance, and qualities associated with data lake and lakehouse. For example while querying delta lake we will get the most recent version, but table registrated against other data sources may represent older cached versions. So here we can use RESRESH - refresch the cache of our data by running `REFRESH TABLE`
+
+## Extracting data from SQL Database
+
+
+
+
+
