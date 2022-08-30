@@ -286,11 +286,139 @@ DROP TABLE CASCADE - drop all associated tables and functions, restrict will not
 
 DESCRIBE EXTENDED sales csv
 
-external data sources will not quarantee performance, and qualities associated with data lake and lakehouse. For example while querying delta lake we will get the most recent version, but table registrated against other data sources may represent older cached versions. So here we can use RESRESH - refresch the cache of our data by running `REFRESH TABLE`
+external data sources will not quarantee performance, and qualities associated with data lake and lakehouse (delta lake sources). For example while querying delta lake we will get the most recent version, but table registrated against other data sources may represent older cached versions. So here we can use RESRESH - refresch the cache of our data by running `REFRESH TABLE`
 
 ## Extracting data from SQL Database
 
+## 4.3 Creating Delta Tables
+
+By CTAS we can define `Delta Tables`- creating tables as SELECR: `CREATE TABLE AS SELECT` - infer schema from query, usefull to use when using data that at source has well defined schema
+- from temporary view we can create delta table
+- CREATE OR REPLACE TABLE - here we define data types to define specific columns, 
+- CREATE OR REPLACE VIEW - no data type definition
+- Delta Lake no need to refresh, always up to date
+
+### Table constraints
+
+Delta lake enforces schema on write thus we can add standard SQL constraint management clauses: NOT NULL and CHECK
+
+### Add constraint
+
+ALLTER TABLE table ADD CONSTRAINTS valid_date CHECK (date > '2020-02-01') -  check constraints in tblproperties
+
+### Delta Lake Table cloning
+
+- `DEEP CLONE` - all data plus metadata
+- `SHALLOW CLONE` - data doesnt move, just copy of transaction log
+
+## 4.4 Writing to delta table
+
+#### OVERWRITE 
+- CREATE OR REPLACE TABLE, can define schema
+- INSERT OVERWRITE - only replace no overwrite, overwrite only new records, can overwrite individual partitions, can't enforce schema
+
+#### APPEND ROWS
+- INSERT INTO - without overwriting, can cause overwrite
+
+#### MERGE UPDATES
+- update, inserts, deletes as completed single transaction, multiple conditions, custom logic
+- matched and not matched conditions
+- can be used for matched and not matched
+```
+MERGE INTO users a
+USING users_update b
+ON a.user_id = b.user_id
+WHEN MATCHED AND a.email IS NULL AND b.email IS NOT NULL THEN
+  UPDATE SET email = b.email, updated = b.updated
+WHEN NOT MATCHED THEN INSERT *
+```
+#### Load incrementally
+
+`COPY INTO`
+- ingest data from external systems (requires consistent schema), 
+- better to overwrite data in the table -  faster, can retrive data using time travel, acid so in the case of failure - previous version in in
 
 
+## 4.5 Extract Lad Data Lab
 
 
+1. Extract raw data from JSON
+```
+CREATE TABLE IF NOT EXISTS events_json
+  (key BINARY, offset BIGINT, partition INT, timestamp BIGINT, topic STRING, value BINARY)
+USING JSON
+OPTIONS (path = "${da.paths.datasets}/ecommerce/raw/events-kafka/")
+```
+NOTE: remeber that LONG == BIGINT
+
+2. Create empty table
+
+```
+CREATE TABLE IF NOT EXISTS events_raw
+  (key BINARY, offset BIGINT, partition INT, timestamp BIGINT, topic STRING, value BINARY)
+```
+3. Insert data from 1 to 2
+```
+INSERT INTO events_raw
+SELECT * FROM events_json
+```
+4. Create Delta Table from a Query
+
+```
+CREATE OR REPLACE TABLE item_lookup
+AS SELECT * FROM parquet. .`${da.paths.datasets}/ecommerce/raw/item-lookup`
+```
+
+## 4.6 CLEANING DATA
+
+- `COUNT` (column) - skips null values
+- `COUNT(*)` -  counts `NULL` as well  
+- `COUNT_IF(user_id is NULL AS missing_user` 
+
+- `DISTINCT` - may be affected by NULL  
+
+WHERE, DISTINCT
+
+## 4.7 Advanced SQL Transformation
+
+### `:` and `,` notation
+
+- `:` possible to get some JSON attributes
+-  json* unpack json
+
+### Data Structures
+
+- traverse in JSON by `.` ecommerence.purchase_revenue_in_usd
+- `explode(idem)` put each element in own array arrays in JSON
+
+### Collect array
+
+- collect set - unique values
+- flatten - combine arrows
+- array_distinct - remove duplicates
+
+### JOINS
+. inner, outer, left, right, anti, cross, semi
+
+### SET OPERATIONS
+- UNION
+- MINUS
+- INTERSECT
+
+### Pivot tables
+
+### Higher order functions - Ccomplex data
+- FILTER
+ -  `SELECT filter(array(1, 2, 3), x -> x % 2 == 1);`
+ [1,3] 
+- EXIST
+ - `SELECT exists(array(1, 2, 3), x -> x % 2 == 0);`
+ - true 
+- TRANSFORM - existing build in function on eisting array
+-  `SELECT transform(array(1, 2,3), x -> x+1);`
+ - [2, 3, 4] 
+- 
+- REDUCE
+
+### FILTER - WITH LAMBDA EXPRESSIONS
+- FILTER (items, i -> i.item_id LIKE "%K") AS king_items
