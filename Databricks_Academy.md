@@ -422,3 +422,45 @@ WHERE, DISTINCT
 
 ### FILTER - WITH LAMBDA EXPRESSIONS
 - FILTER (items, i -> i.item_id LIKE "%K") AS king_items
+
+## 4.9 UDF - user defined functions
+
+- to use these functions user has to have USAGE and SELECT permissions
+```
+CREATE OR REPLACE FUNCTION yelling(text STRING)
+RETURNS STRING
+RETURN concat(upper(text), "!!!")
+
+DESCRIBE FUNCTION EXTENDED -  more detailed
+```
+
+### 4.9 RESHAPING DATA LAB
+### CASE WHEN - conditions
+
+```
+SELECT *,
+  CASE 
+    WHEN food = "beans" THEN "I love beans"
+    WHEN food = "potatoes" THEN "My favorite vegetable is potatoes"
+    WHEN food <> "beef" THEN concat("Do you have any good recipes for ", food ,"?")
+    ELSE concat("I don't eat ", food)
+  END
+FROM foods
+```
+
+### CONTROL FLOW FUNCTIONS
+
+```
+CREATE FUNCTION foods_i_like(food STRING)
+RETURNS STRING
+RETURN CASE
+ WHEN food = "beans" THEN "I love beans"
+ WHEN food = "potatoes" THEN "My favorite vegetable is potatoes"
+ WHEN food <> "beef" THEN concat("Do you have any good recipes for ", food, "?")
+ ELSE concat("I dont eat", food)
+END
+
+To apply function
+
+SELECT food_i_like(food-column name) FROM foods(table)
+```
